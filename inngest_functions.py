@@ -1,3 +1,4 @@
+import datetime
 import logging
 
 import inngest
@@ -14,5 +15,5 @@ inngest_client = inngest.Inngest(
     trigger=inngest.TriggerEvent(event="test/hello"),
 )
 async def say_hello(ctx: inngest.Context) -> str:
-    await ctx.step.sleep("wait-a-bit", "5s")
+    await ctx.step.sleep("wait-a-bit", datetime.timedelta(seconds=5))
     return "Hello from the background!"
