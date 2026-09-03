@@ -37,10 +37,34 @@ async def make_report(ctx: inngest.Context) -> str:
             raise Exception("The report oven is broken!")
         return {"topic": topic, "summary": f"Report about {topic}"}
 
-    result = await ctx.step.run("build-report", build_report)
+    try:
+        result = await ctx.step.run("build-report", build_report)
+    except Exception:
+        if report_id in reports:
+            reports[report_id]["status"] = "failed"
+        raise
 
     if report_id in reports:
         reports[report_id]["status"] = "done"
         reports[report_id]["result"] = result
 
     return "done"
+
+
+@inngest_client.create_function(
+    fn_id="heartbeat",
+    trigger=inngest.TriggerCron(cron="* * * * *"),
+)
+async def heartbeat(ctx: inngest.Context) -> str:
+    counts = {"pending": 0, "done": 0, "failed": 0}
+    for report in reports.values():
+        status = report.get("status")
+        if status in counts:
+            counts[status] += 1
+
+    summary = (
+        f"reports: {counts['pending']} pending, "
+        f"{counts['done']} done, {counts['failed']} failed"
+    )
+    ctx.logger.info(summary)
+    return summary

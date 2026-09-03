@@ -4,12 +4,12 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
 import inngest.fast_api
-from inngest_functions import inngest_client, make_report, say_hello
+from inngest_functions import heartbeat, inngest_client, make_report, say_hello
 from store import reports
 
 app = FastAPI(title="background report job")
 
-inngest.fast_api.serve(app, inngest_client, [say_hello, make_report])
+inngest.fast_api.serve(app, inngest_client, [say_hello, make_report, heartbeat])
 
 
 @app.get("/health")
