@@ -14,5 +14,5 @@ inngest_client = inngest.Inngest(
     trigger=inngest.TriggerEvent(event="test/hello"),
 )
 async def say_hello(ctx: inngest.Context) -> str:
-    await ctx.step.sleep("wait-a-bit", 5)
+    await ctx.step.sleep("wait-a-bit", "5s")
     return "Hello from the background!"
