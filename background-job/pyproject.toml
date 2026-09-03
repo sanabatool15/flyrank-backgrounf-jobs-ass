@@ -1,0 +1,15 @@
+[project]
+name = "background-job"
+version = "0.1.0"
+description = "FlyRank Internship - Backend Track - W4 - A7: Your first background job"
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.30",
+    "inngest>=0.4",
+    "python-dotenv>=1.0",
+]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
