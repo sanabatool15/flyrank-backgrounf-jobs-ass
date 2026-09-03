@@ -32,6 +32,7 @@ Open the dashboard at http://localhost:8288 to watch functions run.
 | `GET /reports/{id}` | endpoint | Returns the report: `pending` → `done` + result. Unknown id → `404` |
 | `say-hello` | Inngest function | Triggered by `test/hello`; sleeps 5s, returns a greeting (Stage 1 warm-up) |
 | `make-report` | Inngest function | Triggered by `report/requested`; sleeps 8s (`do-the-slow-work`), then runs `build-report`; retries up to 2 times on failure |
+| `heartbeat` | Inngest function | Cron-triggered (`* * * * *`, every minute); no endpoint, no event — logs a summary of how many reports are `pending`, `done`, `failed` |
 
 ## 202 proof
 
@@ -59,11 +60,19 @@ total) before marking the run Failed.
 
 ## Stage 4 note — cron expressions
 
-_To be filled in after Stage 4._
+The `heartbeat` function uses `* * * * *` (every minute) so it's easy to
+watch during testing. A real daily version would use `0 8 * * *` — every day
+at 08:00. To run it every Sunday at 22:00 instead, the expression would be
+`0 22 * * 0` (both built and confirmed on crontab.guru).
 
 ## Dashboard screenshot
 
-_To be added._
+_Screenshot to be added here: open http://localhost:8288, run through the
+checkpoints for Stages 1–4, then save a screenshot showing a completed
+`make-report` run with its steps, a failed `make-report` run with its 3
+retry attempts, and at least two `heartbeat` cron runs a minute apart —
+save it as `docs/dashboard.png` and embed it with
+`![dashboard](docs/dashboard.png)`._
 
 ## AI vs me
 
