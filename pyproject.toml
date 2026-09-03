@@ -10,6 +10,3 @@ dependencies = [
     "python-dotenv>=1.0",
 ]
 
-[build-system]
-requires = ["setuptools>=68"]
-build-backend = "setuptools.build_meta"

@@ -17,3 +17,14 @@ inngest_client = inngest.Inngest(
 async def say_hello(ctx: inngest.Context) -> str:
     await ctx.step.sleep("wait-a-bit", datetime.timedelta(seconds=5))
     return "Hello from the background!"
+
+
+@inngest_client.create_function(
+    fn_id="report-requested",
+    trigger=inngest.TriggerEvent(event="report/requested"),
+)
+async def report_requested(ctx: inngest.Context) -> str:
+    await ctx.step.sleep("wait-a-bit", datetime.timedelta(seconds=5))
+    await ctx.step.run("build-report", {"report": "Report generation completed!"})
+    
+    return "Report generation completed!"
